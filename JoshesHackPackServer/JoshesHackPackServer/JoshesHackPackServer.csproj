@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SSH.Net" Version="2020.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="HackLibrary">
+      <HintPath>..\..\TriangulatorLibrary\TriangulatorLibrary\bin\Debug\HackLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json.SourceGeneration">
+      <HintPath>..\..\..\..\.nuget\packages\system.text.json\6.0.0\analyzers\dotnet\roslyn3.11\cs\System.Text.Json.SourceGeneration.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

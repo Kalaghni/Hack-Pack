@@ -1,0 +1,54 @@
+﻿@page "/flood"
+@using HackLibrary;
+<link rel="stylesheet" href="css/buttons.css" />
+<h1>UDP Syn Flooder</h1>
+
+<h3>Sends packets to IP address using UDP</h3>
+<hr/>
+<table>
+    <thead>
+        <tr>
+            <th>IP Address</th>
+            <th>Port</th>
+            <th>Packets</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input @bind="IP" type="text" placeholder="12.43.123.213" /></td>
+            <td><input @bind="port" type="number" placeholder="22" /></td>
+            <td><input @bind="packets" type="number" placeholder="10000" /></td>
+            <td><input @bind="count" type="number" placeholder="1" /></td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td><button class="button-5" @onclick="SendPackets">Start Flooding</button></td>
+        </tr>
+    </tbody>
+</table>
+<textarea style="width: 75%; min-height: 200px" @bind="result" readonly></textarea>
+<hr/>
+
+
+@code {
+    private string? IP;
+    private int? port;
+    private int? packets;
+    private int? count = 1;
+
+    private string result = "";
+
+    private void SendPackets()
+    {
+        if (IP != null && packets != null && port != null && count != null)
+        {
+            result += $"{DosTools.UDPSynFloodAsync((int)packets, IP, (int)port, (int)count)}\n";
+        }
+        else
+        {
+            result = "Please fill in all the values";
+        }
+    }
+}

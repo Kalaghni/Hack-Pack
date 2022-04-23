@@ -1,0 +1,9 @@
+C:\Users\joshi\source\repos\TriangulatorLibrary\TriangulatorLibrary\bin\Debug\TriangulatorLibrary.dll
+C:\Users\joshi\source\repos\TriangulatorLibrary\TriangulatorLibrary\bin\Debug\TriangulatorLibrary.pdb
+C:\Users\joshi\source\repos\TriangulatorLibrary\TriangulatorLibrary\bin\Debug\Newtonsoft.Json.dll
+C:\Users\joshi\source\repos\TriangulatorLibrary\TriangulatorLibrary\bin\Debug\Newtonsoft.Json.xml
+C:\Users\joshi\source\repos\TriangulatorLibrary\TriangulatorLibrary\obj\Debug\TriangulatorLibrary.csproj.AssemblyReference.cache
+C:\Users\joshi\source\repos\TriangulatorLibrary\TriangulatorLibrary\obj\Debug\TriangulatorLibrary.csproj.CoreCompileInputs.cache
+C:\Users\joshi\source\repos\TriangulatorLibrary\TriangulatorLibrary\obj\Debug\TriangulatorLibrary.csproj.CopyComplete
+C:\Users\joshi\source\repos\TriangulatorLibrary\TriangulatorLibrary\obj\Debug\TriangulatorLibrary.dll
+C:\Users\joshi\source\repos\TriangulatorLibrary\TriangulatorLibrary\obj\Debug\TriangulatorLibrary.pdb

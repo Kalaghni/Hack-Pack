@@ -1,0 +1,90 @@
+﻿@page "/locate"
+@using HackLibrary;
+<link rel="stylesheet" href="css/buttons.css" />
+<h1>Ip Geolocation Triangulator</h1>
+
+<h3>Enter 3 IP addresses to triangulate on one central location</h3>
+
+<button class="button-5" @onclick="RandomIPS">Fill Random IPs</button>
+<br />
+<hr />
+<table>
+    <thead>
+        <tr>
+            <th>IP Address</th>
+            <th style="width: 100%">Approximate Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <input @bind="ip1" />
+            </td>
+            <td>
+                <input style="width: 30%" @bind="ipdata1" readonly />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input @bind="ip2" />
+            </td>
+            <td>
+                <input style="width: 30%" @bind="@ipdata2" readonly />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input @bind="ip3" />
+            </td>
+            <td>
+                <input style="width: 30%" @bind="@ipdata3" readonly />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button style="width: 90%"class="button-5" @onclick="DoLocate">Locate</button>
+            </td>
+            <td>
+                <input style="width: 30%" @bind="result" readonly />
+            </td>
+        </tr>
+    </tbody>
+</table>
+<hr />
+<br />
+
+<div>
+    <img @bind-src="@url" @bind-src:event="onchange"/>
+</div>
+
+@code {
+    private string url = "";
+
+    private string ipdata1 = "";
+    private string ipdata2 = "";
+    private string ipdata3 = "";
+
+    private string ip1;
+    private string ip2;
+    private string ip3;
+    private string result;
+
+    private async Task DoLocate()
+    {
+        result = "Loading...";
+        Triangulate.ClearPoints();
+
+        ipdata1 = await Triangulate.LocationDetails(await Triangulate.GrabLocation(ip1));
+        ipdata2 = await Triangulate.LocationDetails(await Triangulate.GrabLocation(ip2));
+        ipdata3 = await Triangulate.LocationDetails(await Triangulate.GrabLocation(ip3));
+
+        url = Triangulate.GraphURL();
+        result = await Triangulate.LocationDetails(Triangulate.GrabLocation(Triangulate.GetCenter().Item1, Triangulate.GetCenter().Item2));
+    }
+    private async Task RandomIPS()
+    {
+        ip1 = await Triangulate.RandomIPAsync();
+        ip2 = await Triangulate.RandomIPAsync();
+        ip3 = await Triangulate.RandomIPAsync();
+    }
+}
