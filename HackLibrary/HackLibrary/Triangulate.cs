@@ -10,6 +10,8 @@ namespace HackLibrary
 {
     public static class Triangulate
     {
+        readonly string API_KEY_IPGEO = "<API_KEY_HERE>";
+        readonly string API_KEY_OPENCAGE = "<API_KEY_HERE>";
         static int count = 0;
         static public Centroid points = new Centroid();
 
@@ -36,7 +38,7 @@ namespace HackLibrary
         public static async Task<(decimal, decimal)> CoordsFromIP(string ipaddress)
         {
             HttpClient client = new HttpClient();
-            string json = await client.GetStringAsync("https://api.ipgeolocation.io/ipgeo?apiKey=6640be4c774f4aaeb646d5c1c70db52f&ip=" + ipaddress);
+            string json = await client.GetStringAsync("https://api.ipgeolocation.io/ipgeo?apiKey=" + API_KEY_IPGEO + "&ip=" + ipaddress);
             Root data = JsonConvert.DeserializeObject<Root>(json);
             return (decimal.Parse(data.latitude), decimal.Parse(data.longitude));
         }
@@ -75,7 +77,7 @@ namespace HackLibrary
         {
             HttpClient client = new HttpClient();
 
-            Uri URI = new Uri($"https://api.opencagedata.com/geocode/v1/json?key=3fc9b2bf7cef45c7b333d912f0ebcff4&q={location.Coordinates.Item1}%2C+{location.Coordinates.Item2}&pretty=1&no_annotations=1");
+            Uri URI = new Uri($"https://api.opencagedata.com/geocode/v1/json?key=" + API_KEY_OPENCAGE + "&q={location.Coordinates.Item1}%2C+{location.Coordinates.Item2}&pretty=1&no_annotations=1");
 
             string json = await client.GetStringAsync(URI);
 
@@ -90,7 +92,7 @@ namespace HackLibrary
             Location location = await GrabLocation(ipaddress);
             HttpClient client = new HttpClient();
 
-            Uri URI = new Uri($"https://api.opencagedata.com/geocode/v1/json?key=3fc9b2bf7cef45c7b333d912f0ebcff4&q={location.Coordinates.Item1}%2C+{location.Coordinates.Item2}&pretty=1&no_annotations=1");
+            Uri URI = new Uri($"https://api.opencagedata.com/geocode/v1/json?key=" + API_KEY_OPENCAGE + "&q={location.Coordinates.Item1}%2C+{location.Coordinates.Item2}&pretty=1&no_annotations=1");
 
             string json = await client.GetStringAsync(URI);
 
@@ -105,7 +107,7 @@ namespace HackLibrary
             Location location = GrabLocation(lat, lng);
             HttpClient client = new HttpClient();
 
-            Uri URI = new Uri($"https://api.opencagedata.com/geocode/v1/json?key=3fc9b2bf7cef45c7b333d912f0ebcff4&q={location.Coordinates.Item1}%2C+{location.Coordinates.Item2}&pretty=1&no_annotations=1");
+            Uri URI = new Uri($"https://api.opencagedata.com/geocode/v1/json?key=" + API_KEY_OPENCAGE + "&q={location.Coordinates.Item1}%2C+{location.Coordinates.Item2}&pretty=1&no_annotations=1");
 
             string json = await client.GetStringAsync(URI);
 
